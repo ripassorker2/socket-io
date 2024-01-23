@@ -1,10 +1,15 @@
-const io = require("socket.io")(7000, {
+require("dotenv").config();
+const port = process.env.PORT || 7000;
+
+const io = require("socket.io")(port, {
     cors: {
         origin: "http://localhost:3000",
     },
 });
 
 let users = [];
+
+console.log(port);
 
 const addUser = (userId, socketId) => {
     !users.some((user) => user.userId === userId) &&
@@ -20,6 +25,7 @@ const getUser = (userId) => {
 
 io.on("connection", (socket) => {
     // when user connects
+
     socket.on("addUser", (userId) => {
         if (userId) {
             addUser(userId, socket.id);
